@@ -1,0 +1,26 @@
+---
+# 1.1 clear gateway_external_network_id and external_network_bridge parameters in /etc/neutron/l3_agent.ini
+- name: clear gateway_external_network_id
+  linefile: 
+      dest={{l3_config_file}} 
+      backup=yes 
+      state=present 
+      regexp=^external_network_bridge =* 
+      line=external_network_bridge =
+- name: clear gateway_external_network_id
+  linefile: 
+      dest={{l3_config_file}} 
+      state=present 
+      regexp=^gateway_external_network_id =* 
+      line=gateway_external_network_id =
+# 1.2 update configuration for the defualt current external network net04_ex
+- name: get bridge_mapping
+  command: grep ^bridge_mappings {{ml2_config_file}}
+  register: bridge_mapping
+- name: update configuration for the default external network
+  linefile:
+      dest={{ml2_config_file}}
+      state=present
+      regexp=^bridge_mapping*
+      line=bridge_mapping.stdout_lines,{{default_physnet}}:{{default_br_ex}}
+      backup=yes

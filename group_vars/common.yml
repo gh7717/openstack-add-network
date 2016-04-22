@@ -1,0 +1,4 @@
+l2_config_file:'/etc/neutron/plugin.ini' 
+l3_config_file: '/etc/neutron/l3_agent.ini' 
+default_br_ex: 'br-floating'
+default_physnet: 'physnet-ex'
